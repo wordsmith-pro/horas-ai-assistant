@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { signIn, signUp } from "@/lib/auth-client"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { signIn, signUp, useSession } from "@/lib/auth-client"
 import HorasLogo from "./HorasLogo"
 
 interface AuthFormProps {
@@ -9,11 +10,20 @@ interface AuthFormProps {
 }
 
 export default function AuthForm({ mode }: AuthFormProps) {
+  const router = useRouter()
+  const { data: session, isPending } = useSession()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  // If already authenticated, go to the app
+  useEffect(() => {
+    if (!isPending && session?.user) {
+      router.replace("/")
+    }
+  }, [isPending, session, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,10 +31,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setLoading(true)
 
     const onSuccess = () => {
-      // Hard navigation forces the RSC to re-run auth.api.getSession()
-      // and pick up the newly-set cookie, avoiding the iframe cookie issue
-      // where router.push() doesn't re-execute server components.
-      window.location.href = "/"
+      // useSession will reactively update after sign-in; the useEffect above
+      // will then call router.replace("/") automatically. We also call it here
+      // as an immediate fallback.
+      router.replace("/")
     }
 
     const onError = (ctx: { error: { message?: string } }) => {
