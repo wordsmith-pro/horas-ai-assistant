@@ -22,10 +22,10 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'HORAS — AI Assistant',
-  description: 'HORAS is an Egyptian AI Assistant powered by cutting-edge models for text, image, video, and music generation.',
-  generator: 'HORAS AI',
-  keywords: ['AI', 'Assistant', 'Egypt', 'ChatGPT', 'Image Generation', 'Music Generation', 'Video Generation'],
+  title: 'AMUN — Egyptian AI Assistant',
+  description: 'AMUN is an Egyptian AI Assistant powered by cutting-edge models for text, image, video, and music generation.',
+  generator: 'AMUN AI',
+  keywords: ['AI', 'Assistant', 'Egypt', 'AMUN', 'Image Generation', 'Music Generation', 'Video Generation'],
 }
 
 export const viewport: Viewport = {

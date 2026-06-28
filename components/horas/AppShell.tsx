@@ -25,7 +25,7 @@ export default function AppShell() {
       // First, try to read from localStorage (set after successful sign-in)
       let session: CachedSession | null = null
       if (typeof window !== "undefined") {
-        const cached = localStorage.getItem("horas-user-session")
+        const cached = localStorage.getItem("amun-user-session")
         if (cached) {
           try {
             session = JSON.parse(cached)
