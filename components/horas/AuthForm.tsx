@@ -29,6 +29,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setLoading(true)
 
     const onSuccess = () => {
+      // Store that we just signed in to bypass session fetch race condition in iframe
+      localStorage.setItem("horas-auth-pending", "true")
       // Hard navigate so the new session is picked up on the next page load
       window.location.href = "/"
     }
