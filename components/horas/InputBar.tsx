@@ -100,7 +100,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
               onClick={() => setMode(m.value)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium font-sans transition-all duration-200 border ${
                 mode === m.value
-                  ? `bg-input-active border-horas-gold/40 text-foreground shadow-sm`
+                  ? `bg-horas-input-active border-horas-gold/40 text-foreground shadow-sm`
                   : "bg-transparent border-transparent text-foreground/40 hover:text-foreground/70 hover:border-border"
               }`}
             >
@@ -113,7 +113,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
 
           <div className="ml-auto flex items-center">
             <Tooltip>
-              <TooltipTrigger asChild>
+              <TooltipTrigger>
                 <button
                   type="button"
                   onClick={() => setSearchWeb(!searchWeb)}
@@ -137,7 +137,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
         </div>
 
         {/* Main input container */}
-        <div className="relative flex items-end gap-2 bg-input-bg border border-input-border rounded-2xl px-4 py-3 shadow-lg focus-within:border-horas-gold/50 focus-within:shadow-[0_0_0_3px_rgba(201,168,76,0.08)] transition-all duration-200">
+        <div className="relative flex items-end gap-2 bg-horas-input-bg border border-horas-input-border rounded-2xl px-4 py-3 shadow-lg focus-within:border-horas-gold/50 focus-within:shadow-[0_0_0_3px_rgba(201,168,76,0.08)] transition-all duration-200">
           {/* Mode indicator dot */}
           <div className={`w-2 h-2 rounded-full flex-shrink-0 mb-1.5 ${activeMode.color.replace("text-", "bg-")}`} />
 

@@ -65,7 +65,7 @@ export default function WelcomeScreen({ theme, userName, onSuggestion }: Welcome
           <button
             key={s.text}
             onClick={() => onSuggestion(s.text)}
-            className="group text-left px-4 py-3.5 rounded-xl bg-sidebar border border-border/60 hover:border-horas-gold/40 hover:bg-sidebar-hover transition-all duration-200 shadow-sm hover:shadow-md"
+            className="group text-left px-4 py-3.5 rounded-xl bg-horas-sidebar border border-horas-sidebar-border hover:border-horas-gold/40 hover:bg-horas-sidebar-hover transition-all duration-200 shadow-sm hover:shadow-md"
           >
             <p className="text-xs font-medium text-foreground font-sans leading-snug line-clamp-2 dir-auto" dir="auto">
               {s.text}

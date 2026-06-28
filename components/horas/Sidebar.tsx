@@ -69,11 +69,11 @@ export default function Sidebar({
 
   if (collapsed) {
     return (
-      <aside className="flex flex-col items-center py-4 gap-4 w-14 bg-sidebar border-r border-sidebar-border h-screen flex-shrink-0 transition-all duration-300">
+      <aside className="flex flex-col items-center py-4 gap-4 w-14 bg-horas-sidebar border-r border-horas-sidebar-border h-screen flex-shrink-0 transition-all duration-300">
         <button onClick={onToggleCollapse} className="p-2 rounded-lg hover:bg-horas-gold/10 transition-colors" title="Expand sidebar">
           <HorasLogo theme={theme} size={28} />
         </button>
-        <Separator className="w-8 bg-sidebar-border" />
+        <Separator className="w-8 bg-horas-sidebar-border" />
         <button
           onClick={onNewChat}
           className="p-2 rounded-lg hover:bg-horas-gold/10 transition-colors text-horas-gold"
@@ -88,7 +88,7 @@ export default function Sidebar({
   }
 
   return (
-    <aside className="flex flex-col w-64 bg-sidebar border-r border-sidebar-border h-screen flex-shrink-0 transition-all duration-300">
+    <aside className="flex flex-col w-64 bg-horas-sidebar border-r border-horas-sidebar-border h-screen flex-shrink-0 transition-all duration-300">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-2.5">
@@ -122,7 +122,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      <Separator className="bg-sidebar-border mx-3 w-auto" />
+      <Separator className="bg-horas-sidebar-border mx-3 w-auto" />
 
       {/* Conversations */}
       <ScrollArea className="flex-1 px-2 py-2">
@@ -137,7 +137,7 @@ export default function Sidebar({
                 className={`w-full group flex items-start gap-2 px-3 py-2.5 rounded-lg text-left transition-all duration-150 ${
                   currentConvId === conv.id
                     ? "bg-horas-gold/15 text-foreground"
-                    : "text-foreground/60 hover:bg-sidebar-hover hover:text-foreground"
+                    : "text-foreground/60 hover:bg-horas-sidebar-hover hover:text-foreground"
                 }`}
               >
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" className="mt-0.5 flex-shrink-0 opacity-60">
@@ -166,13 +166,13 @@ export default function Sidebar({
         )}
       </ScrollArea>
 
-      <Separator className="bg-sidebar-border mx-3 w-auto" />
+      <Separator className="bg-horas-sidebar-border mx-3 w-auto" />
 
       {/* User profile */}
       <div className="p-3">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-sidebar-hover transition-colors">
+          <DropdownMenuTrigger className="w-full">
+            <button className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-horas-sidebar-hover transition-colors">
               <Avatar className="w-8 h-8 flex-shrink-0">
                 <AvatarFallback className="bg-horas-gold/20 text-horas-gold text-xs font-bold font-sans">
                   {userName.charAt(0).toUpperCase()}

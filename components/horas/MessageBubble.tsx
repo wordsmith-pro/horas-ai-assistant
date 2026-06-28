@@ -79,7 +79,7 @@ function VideoMedia({ url }: { url: string }) {
 function AudioMedia({ url }: { url: string }) {
   return (
     <div className="mt-3">
-      <div className="bg-sidebar rounded-xl p-3 border border-border/40 max-w-sm">
+      <div className="bg-horas-sidebar rounded-xl p-3 border border-border/40 max-w-sm">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-8 h-8 rounded-full bg-horas-gold/20 flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" className="text-horas-gold">
@@ -142,7 +142,7 @@ export default function MessageBubble({
           className={`px-4 py-3 rounded-2xl ${
             isUser
               ? "bg-horas-blue text-white rounded-tr-sm"
-              : "bg-message-ai text-foreground rounded-tl-sm border border-border/40"
+              : "bg-horas-message-ai text-foreground rounded-tl-sm border border-border/40"
           }`}
           dir={isRTL ? "rtl" : "ltr"}
         >

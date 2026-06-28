@@ -9,7 +9,7 @@ export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
   return (
     <button
       onClick={onToggle}
-      className="p-2 rounded-lg hover:bg-sidebar-hover transition-colors text-foreground/50 hover:text-foreground"
+      className="p-2 rounded-lg hover:bg-horas-sidebar-hover transition-colors text-foreground/50 hover:text-foreground"
       title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
       aria-label="Toggle theme"
     >
