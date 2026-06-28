@@ -34,7 +34,7 @@ interface LocalMessage {
 }
 
 export default function ChatInterface({ user, initialConversations }: ChatInterfaceProps) {
-  const [theme, setTheme] = useState<"dark" | "light">("light")
+  const [theme, setTheme] = useState<"dark" | "light">("dark")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [conversations, setConversations] = useState<Conversation[]>(initialConversations)
   const [currentConvId, setCurrentConvId] = useState<string | null>(null)
@@ -325,7 +325,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
             {sidebarCollapsed && (
               <>
                 <HorasLogo theme={theme} size={28} className="logo-shimmer" />
-                <span className="font-bold text-sm font-sans tracking-wide" style={{ color: "#C9A84C" }}>AMUN</span>
+                <span className="font-bold text-sm font-sans tracking-wide" style={{ color: "#D4AF37" }}>AMUN</span>
               </>
             )}
             {!sidebarCollapsed && (
