@@ -45,7 +45,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
 
   // Apply theme to document
   useEffect(() => {
-    document.documentElement.setAttribute("data-horas-theme", theme)
+    document.documentElement.setAttribute("data-amun-theme", theme)
     if (theme === "dark") {
       document.documentElement.classList.add("dark")
     } else {
@@ -325,7 +325,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
             {sidebarCollapsed && (
               <>
                 <HorasLogo theme={theme} size={28} className="logo-shimmer" />
-                <span className="font-bold text-sm font-sans tracking-wide" style={{ color: "#C9A84C" }}>HORAS</span>
+                <span className="font-bold text-sm font-sans tracking-wide" style={{ color: "#C9A84C" }}>AMUN</span>
               </>
             )}
             {!sidebarCollapsed && (
@@ -335,7 +335,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
               >
                 {currentConvId
                   ? (conversations.find((c) => c.id === currentConvId)?.title ?? "Conversation")
-                  : "HORAS AI Assistant"}
+                  : "AMUN Egyptian AI Assistant"}
               </span>
             )}
           </div>

@@ -33,7 +33,7 @@ export default function WelcomeScreen({ theme, userName, onSuggestion }: Welcome
         Hello, <span className="text-horas-gold">{firstName}</span>
       </h1>
       <p className="text-lg text-foreground/50 font-sans mb-1">
-        مرحباً، أنا <span className="text-horas-gold font-semibold">حورس</span>
+        مرحباً، أنا <span className="text-horas-gold font-semibold">آمون</span>
       </p>
       <p className="text-sm text-foreground/40 font-sans max-w-md mb-10 leading-relaxed">
         Your Egyptian AI Assistant — capable of text, image, video, and music generation.

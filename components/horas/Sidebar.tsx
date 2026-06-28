@@ -94,8 +94,8 @@ export default function Sidebar({
         <div className="flex items-center gap-2.5">
           <HorasLogo theme={theme} size={32} />
           <div>
-            <p className="font-bold text-sm text-foreground font-sans tracking-wide">HORAS</p>
-            <p className="text-[10px] text-horas-gold/70 font-sans tracking-widest uppercase">AI Assistant</p>
+            <p className="font-bold text-sm text-foreground font-sans tracking-wide">AMUN</p>
+            <p className="text-[10px] text-horas-gold/70 font-sans tracking-widest uppercase">Egyptian AI</p>
           </div>
         </div>
         <button
