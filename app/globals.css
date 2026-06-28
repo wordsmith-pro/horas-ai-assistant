@@ -66,15 +66,17 @@
 /* ── AMUN Light override ──────────────────────────────────────── */
 [data-amun-theme="light"] {
   --color-amun-sidebar:        #FFFFFF;
-  --color-amun-sidebar-hover:  rgba(212, 175, 55, 0.08);
-  --color-amun-sidebar-border: rgba(0, 0, 0, 0.06);
+  --color-amun-sidebar-hover:  rgba(212, 175, 55, 0.1);
+  --color-amun-sidebar-border: rgba(0, 0, 0, 0.08);
   --color-amun-input-bg:       #F4F6FA;
-  --color-amun-input-border:   rgba(0, 0, 0, 0.12);
-  --color-amun-input-active:   rgba(212, 175, 55, 0.12);
+  --color-amun-input-border:   rgba(0, 0, 0, 0.15);
+  --color-amun-input-active:   rgba(212, 175, 55, 0.15);
   --color-amun-message-ai:     #FFFFFF;
   color-scheme: light;
-  --background: oklch(0.975 0 0);
-  --foreground: oklch(0.13 0 0);
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.08 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --border: oklch(0.88 0 0);
 }
 
 /* ── AMUN Dark override ──────────────────────────────────────── */
@@ -95,8 +97,8 @@
 
 :root {
   color-scheme: light;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.08 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
