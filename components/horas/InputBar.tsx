@@ -98,10 +98,10 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
               key={m.value}
               type="button"
               onClick={() => setMode(m.value)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium font-sans transition-all duration-200 border ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-medium font-sans transition-all duration-300 border backdrop-blur-md ${
                 mode === m.value
-                  ? `bg-horas-input-active border-horas-gold/40 text-foreground shadow-sm`
-                  : "bg-transparent border-transparent text-foreground/40 hover:text-foreground/70 hover:border-border"
+                  ? `bg-horas-input-active border-horas-gold/50 text-foreground shadow-[0_4px_12px_rgba(212,175,55,0.2)] scale-105`
+                  : "bg-white/5 border-white/10 text-foreground/40 hover:text-foreground/70 hover:border-white/20 hover:bg-white/10"
               }`}
             >
               <span className={mode === m.value ? m.color : ""}>{m.icon}</span>
@@ -136,8 +136,8 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
           </div>
         </div>
 
-        {/* Main input container */}
-        <div className="relative flex items-end gap-2 bg-horas-input-bg border border-horas-input-border rounded-2xl px-4 py-3 shadow-lg focus-within:border-horas-gold/50 focus-within:shadow-[0_0_0_3px_rgba(201,168,76,0.08)] transition-all duration-200">
+        {/* Main input container with premium 3D design */}
+        <div className="relative flex items-end gap-2 bg-horas-input-bg border border-horas-input-border rounded-3xl px-4 py-3 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] focus-within:border-horas-gold/60 focus-within:shadow-[0_0_0_4px_rgba(212,175,55,0.15),0_8px_32px_rgba(212,175,55,0.1)] transition-all duration-300 group">
           {/* Mode indicator dot */}
           <div className={`w-2 h-2 rounded-full flex-shrink-0 mb-1.5 ${activeMode.color.replace("text-", "bg-")}`} />
 
@@ -149,7 +149,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
             disabled={disabled}
             placeholder={
               mode === "text"
-                ? "Ask HORAS anything... / اسأل حورس أي شيء..."
+                ? "Ask AMUN anything... / اسأل آمون أي شيء..."
                 : mode === "image"
                 ? "Describe the image you want... / صف الصورة التي تريدها..."
                 : mode === "video"
@@ -161,11 +161,11 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
             dir="auto"
           />
 
-          {/* Send button */}
+          {/* Send button with 3D premium design */}
           <button
             type="submit"
             disabled={!message.trim() || disabled}
-            className="flex-shrink-0 w-9 h-9 rounded-xl bg-horas-gold hover:bg-horas-gold/90 disabled:bg-foreground/10 disabled:cursor-not-allowed text-[#0D1117] disabled:text-foreground/30 flex items-center justify-center transition-all duration-200 shadow-sm"
+            className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-horas-gold to-[#A68A2E] hover:from-[#E8C870] hover:to-horas-gold disabled:bg-foreground/10 disabled:cursor-not-allowed text-[#0D1117] disabled:text-foreground/30 flex items-center justify-center transition-all duration-300 shadow-[0_4px_16px_rgba(212,175,55,0.3),0_0_0_0_rgba(212,175,55,0.2)] hover:shadow-[0_8px_24px_rgba(212,175,55,0.5),0_0_20px_rgba(212,175,55,0.3)] active:shadow-[0_2px_8px_rgba(212,175,55,0.3)] hover:scale-110 active:scale-95 group-focus-within:shadow-[0_8px_24px_rgba(212,175,55,0.5)]"
           >
             {disabled ? (
               <div className="w-4 h-4 rounded-full border-2 border-foreground/30 border-t-transparent animate-spin" />
@@ -178,7 +178,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
         </div>
 
         <p className="text-center text-[10px] text-foreground/20 mt-2 font-sans">
-          HORAS AI can make mistakes. Always verify important information.
+          AMUN AI can make mistakes. Always verify important information.
         </p>
       </form>
     </div>

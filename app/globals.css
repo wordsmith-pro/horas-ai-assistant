@@ -9,20 +9,20 @@
   --font-sans: var(--font-inter), 'Inter', 'Cairo', sans-serif;
   --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
 
-  /* ── HORAS Brand ── */
-  --color-horas-gold:        #C9A84C;
-  --color-horas-gold-light:  #E8C870;
-  --color-horas-blue:        #3B82F6;
-  --color-horas-navy:        #0D1117;
+  /* ── AMUN Brand ── */
+  --color-amun-gold:         #D4AF37;
+  --color-amun-gold-light:   #F0E68C;
+  --color-amun-dark-gold:    #9D7D3D;
+  --color-amun-navy:         #0D1117;
 
-  /* ── HORAS semantic tokens ── */
-  --color-horas-sidebar:        #161B22;
-  --color-horas-sidebar-hover:  rgba(201, 168, 76, 0.06);
-  --color-horas-sidebar-border: rgba(255, 255, 255, 0.06);
-  --color-horas-input-bg:       #1C2128;
-  --color-horas-input-border:   rgba(255, 255, 255, 0.10);
-  --color-horas-input-active:   rgba(201, 168, 76, 0.08);
-  --color-horas-message-ai:     #1C2128;
+  /* ── AMUN semantic tokens ── */
+  --color-amun-sidebar:        #161B22;
+  --color-amun-sidebar-hover:  rgba(212, 175, 55, 0.08);
+  --color-amun-sidebar-border: rgba(255, 255, 255, 0.06);
+  --color-amun-input-bg:       #1C2128;
+  --color-amun-input-border:   rgba(255, 255, 255, 0.10);
+  --color-amun-input-active:   rgba(212, 175, 55, 0.12);
+  --color-amun-message-ai:     #1C2128;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -63,29 +63,29 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ── HORAS Light override ──────────────────────────────────────── */
-[data-horas-theme="light"] {
-  --color-horas-sidebar:        #FFFFFF;
-  --color-horas-sidebar-hover:  rgba(59, 130, 246, 0.05);
-  --color-horas-sidebar-border: rgba(0, 0, 0, 0.06);
-  --color-horas-input-bg:       #F4F6FA;
-  --color-horas-input-border:   rgba(0, 0, 0, 0.12);
-  --color-horas-input-active:   rgba(201, 168, 76, 0.08);
-  --color-horas-message-ai:     #FFFFFF;
+/* ── AMUN Light override ──────────────────────────────────────── */
+[data-amun-theme="light"] {
+  --color-amun-sidebar:        #FFFFFF;
+  --color-amun-sidebar-hover:  rgba(212, 175, 55, 0.08);
+  --color-amun-sidebar-border: rgba(0, 0, 0, 0.06);
+  --color-amun-input-bg:       #F4F6FA;
+  --color-amun-input-border:   rgba(0, 0, 0, 0.12);
+  --color-amun-input-active:   rgba(212, 175, 55, 0.12);
+  --color-amun-message-ai:     #FFFFFF;
   color-scheme: light;
   --background: oklch(0.975 0 0);
   --foreground: oklch(0.13 0 0);
 }
 
-/* ── HORAS Dark override ──────────────────────────────────────── */
-[data-horas-theme="dark"] {
-  --color-horas-sidebar:        #161B22;
-  --color-horas-sidebar-hover:  rgba(201, 168, 76, 0.06);
-  --color-horas-sidebar-border: rgba(255, 255, 255, 0.06);
-  --color-horas-input-bg:       #1C2128;
-  --color-horas-input-border:   rgba(255, 255, 255, 0.10);
-  --color-horas-input-active:   rgba(201, 168, 76, 0.08);
-  --color-horas-message-ai:     #1C2128;
+/* ── AMUN Dark override ──────────────────────────────────────── */
+[data-amun-theme="dark"] {
+  --color-amun-sidebar:        #161B22;
+  --color-amun-sidebar-hover:  rgba(212, 175, 55, 0.08);
+  --color-amun-sidebar-border: rgba(255, 255, 255, 0.06);
+  --color-amun-input-bg:       #1C2128;
+  --color-amun-input-border:   rgba(255, 255, 255, 0.10);
+  --color-amun-input-active:   rgba(212, 175, 55, 0.12);
+  --color-amun-message-ai:     #1C2128;
   color-scheme: dark;
   --background: oklch(0.09 0 0);
   --foreground: oklch(0.96 0 0);
@@ -213,11 +213,54 @@
   }
 }
 
+/* ── AMUN Color Utilities ── */
+@layer components {
+  .bg-amun-gold {
+    @apply bg-[#D4AF37];
+  }
+  .text-amun-gold {
+    @apply text-[#D4AF37];
+  }
+  .border-amun-gold {
+    @apply border-[#D4AF37];
+  }
+  .bg-horas-gold {
+    @apply bg-[#D4AF37];
+  }
+  .text-horas-gold {
+    @apply text-[#D4AF37];
+  }
+  .border-horas-gold {
+    @apply border-[#D4AF37];
+  }
+  .text-horas-blue {
+    @apply text-[#3B82F6];
+  }
+  .bg-horas-input-bg {
+    @apply bg-[#1C2128];
+  }
+  .border-horas-input-border {
+    @apply border-[rgba(255,255,255,0.10)];
+  }
+  .bg-horas-input-active {
+    @apply bg-[rgba(212,175,55,0.12)];
+  }
+  .bg-horas-blue\/10 {
+    @apply bg-[rgba(59,130,246,0.1)];
+  }
+  .text-horas-blue {
+    @apply text-[#3B82F6];
+  }
+  .border-horas-blue\/40 {
+    @apply border-[rgba(59,130,246,0.4)];
+  }
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar        { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: rgba(201,168,76,0.2); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.4); }
+::-webkit-scrollbar-thumb  { background: rgba(212,175,55,0.3); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212,175,55,0.5); }
 
 /* ── Animations ── */
 @keyframes fadeInUp {
@@ -225,8 +268,8 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes goldPulse {
-  0%, 100% { filter: drop-shadow(0 0 6px rgba(201,168,76,0.35)); }
-  50%       { filter: drop-shadow(0 0 14px rgba(201,168,76,0.7)); }
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(212,175,55,0.4)); }
+  50%       { filter: drop-shadow(0 0 16px rgba(212,175,55,0.8)); }
 }
 .animate-fadeInUp { animation: fadeInUp 0.28s ease-out forwards; }
 .logo-shimmer      { animation: goldPulse 3s ease-in-out infinite; }
@@ -237,8 +280,8 @@
   max-width: none;
 }
 .horas-prose code {
-  color: #C9A84C;
-  background: rgba(201,168,76,0.1);
+  color: #D4AF37;
+  background: rgba(212,175,55,0.15);
   padding: 0.1em 0.35em;
   border-radius: 4px;
   font-size: 0.85em;
@@ -257,7 +300,7 @@
 .horas-prose li { margin: 0.2em 0; }
 .horas-prose strong { font-weight: 600; }
 .horas-prose blockquote {
-  border-left: 3px solid #C9A84C;
+  border-left: 3px solid #D4AF37;
   padding-left: 0.75em;
   opacity: 0.8;
   font-style: italic;
