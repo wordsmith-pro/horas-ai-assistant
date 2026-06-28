@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { signIn, signUp } from "@/lib/auth-client"
 import HorasLogo from "./HorasLogo"
 
@@ -10,7 +9,6 @@ interface AuthFormProps {
 }
 
 export default function AuthForm({ mode }: AuthFormProps) {
-  const router = useRouter()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -22,20 +20,28 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setError(null)
     setLoading(true)
 
-    try {
-      if (mode === "sign-up") {
-        const result = await signUp.email({ name, email, password })
-        if (result.error) throw new Error(result.error.message ?? "Sign up failed")
-      } else {
-        const result = await signIn.email({ email, password })
-        if (result.error) throw new Error(result.error.message ?? "Sign in failed")
-      }
-      router.push("/")
-      router.refresh()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
-    } finally {
+    const onSuccess = () => {
+      // Hard navigation forces the RSC to re-run auth.api.getSession()
+      // and pick up the newly-set cookie, avoiding the iframe cookie issue
+      // where router.push() doesn't re-execute server components.
+      window.location.href = "/"
+    }
+
+    const onError = (ctx: { error: { message?: string } }) => {
+      setError(ctx.error.message ?? "An error occurred")
       setLoading(false)
+    }
+
+    if (mode === "sign-up") {
+      await signUp.email(
+        { name, email, password },
+        { onSuccess, onError }
+      )
+    } else {
+      await signIn.email(
+        { email, password },
+        { onSuccess, onError }
+      )
     }
   }
 
