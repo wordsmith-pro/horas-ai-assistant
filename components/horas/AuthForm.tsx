@@ -28,10 +28,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setError(null)
     setLoading(true)
 
-    const onSuccess = () => {
-      // Store that we just signed in to bypass session fetch race condition in iframe
-      localStorage.setItem("horas-auth-pending", "true")
-      // Hard navigate so the new session is picked up on the next page load
+    const onSuccess = async () => {
+      // Fetch session immediately and cache it to work around iframe cookie issue
+      try {
+        const res = await fetch("/api/auth/session", { credentials: "include" })
+        if (res.ok) {
+          const sessionData = await res.json()
+          if (sessionData.user) {
+            localStorage.setItem("horas-user-session", JSON.stringify(sessionData))
+          }
+        }
+      } catch (e) {
+        // If fetch fails, still proceed - AppShell will retry
+      }
       window.location.href = "/"
     }
 

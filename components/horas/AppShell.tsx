@@ -1,54 +1,79 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSession } from "@/lib/auth-client"
 import ChatInterface from "@/components/horas/ChatInterface"
 import HorasLoader from "@/components/horas/HorasLoader"
 import type { Conversation } from "@/lib/db/schema"
 
+interface CachedSession {
+  user?: {
+    id: string
+    name: string | null
+    email: string
+  }
+}
+
 export default function AppShell() {
-  const { data: session, isPending } = useSession()
+  const [user, setUser] = useState<CachedSession["user"] | null>(null)
   const [conversations, setConversations] = useState<Conversation[]>([])
-  const [convLoading, setConvLoading] = useState(false)
-  const [retryCount, setRetryCount] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check if we just signed in (within the last 5 seconds)
-    // In the iframe, the session cookie fetch can race, so we wait a bit
-    const authPending = typeof window !== "undefined" && localStorage.getItem("horas-auth-pending")
-    
-    // Still waiting for session hydration or auth pending flag
-    if (isPending || (authPending && retryCount === 0)) return
+    const loadSession = async () => {
+      setLoading(true)
 
-    // Clear the auth pending flag after first check
-    if (authPending && retryCount > 0) {
-      localStorage.removeItem("horas-auth-pending")
-    }
-
-    if (!session?.user) {
-      // If auth is still pending, retry in 500ms
-      if (authPending && retryCount < 5) {
-        const timer = setTimeout(() => setRetryCount(retryCount + 1), 500)
-        return () => clearTimeout(timer)
+      // First, try to read from localStorage (set after successful sign-in)
+      let session: CachedSession | null = null
+      if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("horas-user-session")
+        if (cached) {
+          try {
+            session = JSON.parse(cached)
+          } catch {
+            // Invalid JSON, ignore
+          }
+        }
       }
-      
-      // Hard navigate — avoids "Router action before initialization" by
-      // never touching the Next.js router before it is ready
-      window.location.href = "/sign-in"
-      return
+
+      // If no cached session, try to fetch from API
+      if (!session?.user) {
+        try {
+          const res = await fetch("/api/auth/session", { credentials: "include" })
+          if (res.ok) {
+            session = await res.json()
+          }
+        } catch {
+          // API fetch failed
+        }
+      }
+
+      if (!session?.user) {
+        // No session found - redirect to sign-in
+        window.location.href = "/sign-in"
+        return
+      }
+
+      // Session found - set user and load conversations
+      setUser(session.user)
+
+      // Fetch conversations
+      try {
+        const res = await fetch("/api/conversations", { credentials: "include" })
+        if (res.ok) {
+          const data = await res.json()
+          setConversations(Array.isArray(data) ? data : [])
+        }
+      } catch {
+        setConversations([])
+      }
+
+      setLoading(false)
     }
 
-    setConvLoading(true)
-    fetch("/api/conversations")
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data: Conversation[]) => setConversations(data))
-      .catch(() => setConversations([]))
-      .finally(() => setConvLoading(false))
-  }, [isPending, session, retryCount])
+    loadSession()
+  }, [])
 
-  // Show loader while session is pending, unauthenticated (about to redirect),
-  // or conversations are still loading
-  if (isPending || !session?.user || convLoading) {
+  if (loading || !user) {
     return (
       <div className="flex h-screen items-center justify-center bg-[#F8F9FC]">
         <HorasLoader />
@@ -59,9 +84,9 @@ export default function AppShell() {
   return (
     <ChatInterface
       user={{
-        id: session.user.id,
-        name: session.user.name,
-        email: session.user.email,
+        id: user.id,
+        name: user.name || "",
+        email: user.email,
       }}
       initialConversations={conversations}
     />
