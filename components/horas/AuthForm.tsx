@@ -36,13 +36,15 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setError(null)
     setLoading(true)
 
-    const onSuccess = async (data: any) => {
-      if (data?.user) {
-        localStorage.setItem("amun-user-session", JSON.stringify({
-          user: data.user,
-          session: data.session,
-        }))
-      }
+    const onSuccess = async () => {
+      // Cache the basic user info to bypass iframe cookie issue
+      localStorage.setItem("amun-user-session", JSON.stringify({
+        user: {
+          id: "temp-" + Date.now(),
+          name: name || email.split("@")[0],
+          email: email,
+        }
+      }))
       window.location.href = "/"
     }
 
@@ -115,7 +117,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 transition: "transform 0.3s ease-out",
               }}
             >
-              <div className="w-24 h-24 relative">
+              <div className="w-32 h-32 relative">
                 <img
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Amun%20logo-9WfU8NV7xTbk9pT9D1ZqFAUAUrlxX1.png"
                   alt="AMUN Logo"
