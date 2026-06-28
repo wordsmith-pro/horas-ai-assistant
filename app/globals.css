@@ -5,9 +5,24 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-geist-sans), 'Geist Fallback';
+  --font-heading: var(--font-cairo);
+  --font-sans: var(--font-inter), 'Inter', 'Cairo', sans-serif;
   --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
+
+  /* ── HORAS Brand ── */
+  --color-horas-gold:        #C9A84C;
+  --color-horas-gold-light:  #E8C870;
+  --color-horas-blue:        #3B82F6;
+  --color-horas-navy:        #0D1117;
+
+  /* ── HORAS semantic tokens (dark default) ── */
+  --color-sidebar:           #161B22;
+  --color-sidebar-hover:     rgba(201, 168, 76, 0.06);
+  --color-sidebar-border:    rgba(255, 255, 255, 0.06);
+  --color-input-bg:          #1C2128;
+  --color-input-border:      rgba(255, 255, 255, 0.10);
+  --color-input-active:      rgba(201, 168, 76, 0.08);
+  --color-message-ai:        #1C2128;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,6 +61,17 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ── HORAS Light override ──────────────────────────────────────── */
+[data-horas-theme="light"] {
+  --color-sidebar:        #FFFFFF;
+  --color-sidebar-hover:  rgba(59, 130, 246, 0.05);
+  --color-sidebar-border: rgba(0, 0, 0, 0.06);
+  --color-input-bg:       #FFFFFF;
+  --color-input-border:   rgba(0, 0, 0, 0.12);
+  --color-input-active:   rgba(201, 168, 76, 0.08);
+  --color-message-ai:     #FFFFFF;
 }
 
 :root {
@@ -166,4 +192,59 @@
   html {
     @apply font-sans;
   }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(201,168,76,0.2); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.4); }
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes goldPulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(201,168,76,0.35)); }
+  50%       { filter: drop-shadow(0 0 14px rgba(201,168,76,0.7)); }
+}
+.animate-fadeInUp { animation: fadeInUp 0.28s ease-out forwards; }
+.logo-shimmer      { animation: goldPulse 3s ease-in-out infinite; }
+
+/* ── Prose markdown overrides ── */
+.horas-prose {
+  color: inherit;
+  max-width: none;
+}
+.horas-prose code {
+  color: #C9A84C;
+  background: rgba(201,168,76,0.1);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+.horas-prose pre {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.6rem;
+  overflow-x: auto;
+}
+.horas-prose a { color: #3B82F6; text-decoration: underline; }
+.horas-prose h1, .horas-prose h2, .horas-prose h3 { font-weight: 600; margin: 0.75em 0 0.4em; }
+.horas-prose p  { margin: 0.4em 0; line-height: 1.65; }
+.horas-prose ul { padding-left: 1.2em; list-style-type: disc; }
+.horas-prose ol { padding-left: 1.2em; list-style-type: decimal; }
+.horas-prose li { margin: 0.2em 0; }
+.horas-prose strong { font-weight: 600; }
+.horas-prose blockquote {
+  border-left: 3px solid #C9A84C;
+  padding-left: 0.75em;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+[data-horas-theme="light"] .horas-prose pre {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.08);
 }

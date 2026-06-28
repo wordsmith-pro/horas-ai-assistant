@@ -1,43 +1,41 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Cairo, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+const cairo = Cairo({
+  variable: '--font-cairo',
+  subsets: ['arabic', 'latin'],
+  display: 'swap',
+})
+
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  title: 'HORAS — AI Assistant',
+  description: 'HORAS is an Egyptian AI Assistant powered by cutting-edge models for text, image, video, and music generation.',
+  generator: 'HORAS AI',
+  keywords: ['AI', 'Assistant', 'Egypt', 'ChatGPT', 'Image Generation', 'Music Generation', 'Video Generation'],
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
+  colorScheme: 'dark light',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: '(prefers-color-scheme: dark)', color: '#0D1117' },
+    { media: '(prefers-color-scheme: light)', color: '#F8F9FC' },
   ],
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -46,9 +44,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${cairo.variable} ${geistMono.variable}`}
+    >
       <body className="font-sans antialiased">
-        {children}
+        <TooltipProvider>
+          {children}
+        </TooltipProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
