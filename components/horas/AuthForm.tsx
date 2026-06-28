@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { signIn, signUp, useSession } from "@/lib/auth-client"
 import HorasLogo from "./HorasLogo"
 
@@ -10,7 +9,6 @@ interface AuthFormProps {
 }
 
 export default function AuthForm({ mode }: AuthFormProps) {
-  const router = useRouter()
   const { data: session, isPending } = useSession()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -18,12 +16,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // If already authenticated, go to the app
+  // If already authenticated redirect without touching the Next.js router
   useEffect(() => {
     if (!isPending && session?.user) {
-      router.replace("/")
+      window.location.href = "/"
     }
-  }, [isPending, session, router])
+  }, [isPending, session])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,10 +29,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setLoading(true)
 
     const onSuccess = () => {
-      // useSession will reactively update after sign-in; the useEffect above
-      // will then call router.replace("/") automatically. We also call it here
-      // as an immediate fallback.
-      router.replace("/")
+      // Hard navigate so the new session is picked up on the next page load
+      window.location.href = "/"
     }
 
     const onError = (ctx: { error: { message?: string } }) => {
@@ -43,15 +39,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
     }
 
     if (mode === "sign-up") {
-      await signUp.email(
-        { name, email, password },
-        { onSuccess, onError }
-      )
+      await signUp.email({ name, email, password }, { onSuccess, onError })
     } else {
-      await signIn.email(
-        { email, password },
-        { onSuccess, onError }
-      )
+      await signIn.email({ email, password }, { onSuccess, onError })
     }
   }
 
