@@ -41,51 +41,62 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: "linear-gradient(135deg, #0D1117 0%, #161B22 50%, #0D1117 100%)" }}
+      className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+      style={{ background: "linear-gradient(160deg, #F8F9FC 0%, #EEF0F8 50%, #F4F2FF 100%)" }}
     >
-      {/* Background decoration */}
+      {/* Subtle background glows — very light, no blobs */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(201,168,76,0.04) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 50%, rgba(59,130,246,0.04) 0%, transparent 50%)`,
+          backgroundImage: `radial-gradient(ellipse at 15% 40%, rgba(201,168,76,0.07) 0%, transparent 55%),
+                            radial-gradient(ellipse at 85% 60%, rgba(59,130,246,0.06) 0%, transparent 55%)`,
         }}
       />
 
-      <div className="relative w-full max-w-sm">
+      <div className="relative w-full max-w-[380px]">
         {/* Logo + brand */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
+        <div className="text-center mb-7">
+          <div className="flex justify-center mb-3">
             <div className="relative">
               <div
-                className="absolute inset-0 rounded-full blur-2xl"
-                style={{ background: "rgba(201,168,76,0.15)" }}
+                className="absolute inset-0 rounded-full blur-3xl"
+                style={{ background: "rgba(201,168,76,0.12)" }}
               />
-              <HorasLogo theme="dark" size={72} className="relative logo-shimmer" />
+              <HorasLogo theme="light" size={80} className="relative logo-shimmer" />
             </div>
           </div>
           <h1
             className="text-2xl font-bold font-sans tracking-wider"
-            style={{ color: "#C9A84C" }}
+            style={{ color: "#8A6A1F" }}
           >
             HORAS
           </h1>
-          <p className="text-xs font-sans tracking-widest mt-0.5" style={{ color: "rgba(201,168,76,0.5)" }}>
+          <p
+            className="text-[10px] font-sans tracking-widest mt-0.5"
+            style={{ color: "rgba(59,130,246,0.7)" }}
+          >
             AI ASSISTANT
           </p>
-          <p className="text-sm mt-3 font-sans" style={{ color: "rgba(232,234,240,0.5)" }}>
-            {mode === "sign-in" ? "Welcome back — أهلاً بعودتك" : "Create your account — أنشئ حسابك"}
+          <p
+            className="text-sm mt-2.5 font-sans"
+            style={{ color: "rgba(13,17,23,0.45)" }}
+          >
+            {mode === "sign-in"
+              ? "Welcome back — أهلاً بعودتك"
+              : "Create your account — أنشئ حسابك"}
           </p>
         </div>
 
         {/* Card */}
         <div
-          className="rounded-2xl p-6 border"
+          className="rounded-2xl p-6"
           style={{
-            background: "#161B22",
-            borderColor: "rgba(255,255,255,0.07)",
-            boxShadow: "0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.06)",
+            background: "rgba(255,255,255,0.85)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(201,168,76,0.15)",
+            boxShadow:
+              "0 8px 32px rgba(13,17,23,0.08), 0 1px 2px rgba(201,168,76,0.12), 0 0 0 1px rgba(255,255,255,0.6) inset",
           }}
         >
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -93,8 +104,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-xs font-medium mb-1.5 font-sans"
-                  style={{ color: "rgba(232,234,240,0.6)" }}
+                  className="block text-xs font-semibold mb-1.5 font-sans"
+                  style={{ color: "rgba(13,17,23,0.55)" }}
                 >
                   Full Name / الاسم الكامل
                 </label>
@@ -107,12 +118,20 @@ export default function AuthForm({ mode }: AuthFormProps) {
                   placeholder="Ahmed Mohamed"
                   className="w-full rounded-xl px-4 py-2.5 text-sm font-sans outline-none transition-all duration-200"
                   style={{
-                    background: "#1C2128",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#E8EAF0",
+                    background: "#F4F6FA",
+                    border: "1.5px solid rgba(13,17,23,0.1)",
+                    color: "#0D1117",
                   }}
-                  onFocus={(e) => (e.target.style.borderColor = "rgba(201,168,76,0.5)")}
-                  onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(201,168,76,0.6)"
+                    e.target.style.background = "#fff"
+                    e.target.style.boxShadow = "0 0 0 3px rgba(201,168,76,0.08)"
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "rgba(13,17,23,0.1)"
+                    e.target.style.background = "#F4F6FA"
+                    e.target.style.boxShadow = "none"
+                  }}
                 />
               </div>
             )}
@@ -120,8 +139,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
             <div>
               <label
                 htmlFor="email"
-                className="block text-xs font-medium mb-1.5 font-sans"
-                style={{ color: "rgba(232,234,240,0.6)" }}
+                className="block text-xs font-semibold mb-1.5 font-sans"
+                style={{ color: "rgba(13,17,23,0.55)" }}
               >
                 Email / البريد الإلكتروني
               </label>
@@ -134,20 +153,28 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 placeholder="you@example.com"
                 className="w-full rounded-xl px-4 py-2.5 text-sm font-sans outline-none transition-all duration-200"
                 style={{
-                  background: "#1C2128",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  color: "#E8EAF0",
+                  background: "#F4F6FA",
+                  border: "1.5px solid rgba(13,17,23,0.1)",
+                  color: "#0D1117",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "rgba(201,168,76,0.5)")}
-                onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "rgba(201,168,76,0.6)"
+                  e.target.style.background = "#fff"
+                  e.target.style.boxShadow = "0 0 0 3px rgba(201,168,76,0.08)"
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "rgba(13,17,23,0.1)"
+                  e.target.style.background = "#F4F6FA"
+                  e.target.style.boxShadow = "none"
+                }}
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-xs font-medium mb-1.5 font-sans"
-                style={{ color: "rgba(232,234,240,0.6)" }}
+                className="block text-xs font-semibold mb-1.5 font-sans"
+                style={{ color: "rgba(13,17,23,0.55)" }}
               >
                 Password / كلمة المرور
               </label>
@@ -161,20 +188,44 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 placeholder="••••••••"
                 className="w-full rounded-xl px-4 py-2.5 text-sm font-sans outline-none transition-all duration-200"
                 style={{
-                  background: "#1C2128",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  color: "#E8EAF0",
+                  background: "#F4F6FA",
+                  border: "1.5px solid rgba(13,17,23,0.1)",
+                  color: "#0D1117",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "rgba(201,168,76,0.5)")}
-                onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "rgba(201,168,76,0.6)"
+                  e.target.style.background = "#fff"
+                  e.target.style.boxShadow = "0 0 0 3px rgba(201,168,76,0.08)"
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "rgba(13,17,23,0.1)"
+                  e.target.style.background = "#F4F6FA"
+                  e.target.style.boxShadow = "none"
+                }}
               />
             </div>
 
             {error && (
               <div
-                className="rounded-lg px-3 py-2 text-xs font-sans"
-                style={{ background: "rgba(239,68,68,0.1)", color: "#F87171", border: "1px solid rgba(239,68,68,0.2)" }}
+                className="rounded-xl px-3.5 py-2.5 text-xs font-sans flex items-start gap-2"
+                style={{
+                  background: "rgba(239,68,68,0.06)",
+                  color: "#DC2626",
+                  border: "1px solid rgba(239,68,68,0.18)",
+                }}
               >
+                <svg
+                  width="14"
+                  height="14"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  className="flex-shrink-0 mt-0.5"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path strokeLinecap="round" d="M12 8v4M12 16h.01" />
+                </svg>
                 {error}
               </div>
             )}
@@ -182,37 +233,49 @@ export default function AuthForm({ mode }: AuthFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-xl text-sm font-semibold font-sans transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 rounded-xl text-sm font-bold font-sans transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-1"
               style={{
-                background: loading ? "rgba(201,168,76,0.4)" : "#C9A84C",
+                background: "linear-gradient(135deg, #C9A84C 0%, #E8C870 100%)",
                 color: "#0D1117",
-                boxShadow: "0 4px 16px rgba(201,168,76,0.25)",
+                boxShadow: loading
+                  ? "none"
+                  : "0 4px 20px rgba(201,168,76,0.35), 0 1px 2px rgba(201,168,76,0.2)",
               }}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin" />
+                  <span className="w-4 h-4 rounded-full border-2 border-[#0D1117]/30 border-t-[#0D1117] animate-spin" />
                   {mode === "sign-in" ? "Signing in..." : "Creating account..."}
                 </span>
+              ) : mode === "sign-in" ? (
+                "Sign In / دخول"
               ) : (
-                mode === "sign-in" ? "Sign In / دخول" : "Create Account / إنشاء حساب"
+                "Create Account / إنشاء حساب"
               )}
             </button>
           </form>
 
           <div className="mt-4 text-center">
-            <p className="text-xs font-sans" style={{ color: "rgba(232,234,240,0.35)" }}>
+            <p className="text-xs font-sans" style={{ color: "rgba(13,17,23,0.4)" }}>
               {mode === "sign-in" ? (
                 <>
                   {"Don't have an account? "}
-                  <a href="/sign-up" className="font-medium hover:underline" style={{ color: "#C9A84C" }}>
+                  <a
+                    href="/sign-up"
+                    className="font-semibold hover:underline"
+                    style={{ color: "#8A6A1F" }}
+                  >
                     Sign Up
                   </a>
                 </>
               ) : (
                 <>
                   Already have an account?{" "}
-                  <a href="/sign-in" className="font-medium hover:underline" style={{ color: "#C9A84C" }}>
+                  <a
+                    href="/sign-in"
+                    className="font-semibold hover:underline"
+                    style={{ color: "#8A6A1F" }}
+                  >
                     Sign In
                   </a>
                 </>
@@ -221,7 +284,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
           </div>
         </div>
 
-        <p className="text-center text-[10px] mt-4 font-sans" style={{ color: "rgba(232,234,240,0.2)" }}>
+        <p
+          className="text-center text-[10px] mt-4 font-sans"
+          style={{ color: "rgba(13,17,23,0.25)" }}
+        >
           HORAS AI — Made in Egypt for the World
         </p>
       </div>

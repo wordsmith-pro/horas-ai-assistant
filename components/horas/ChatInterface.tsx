@@ -34,7 +34,7 @@ interface LocalMessage {
 }
 
 export default function ChatInterface({ user, initialConversations }: ChatInterfaceProps) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark")
+  const [theme, setTheme] = useState<"dark" | "light">("light")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [conversations, setConversations] = useState<Conversation[]>(initialConversations)
   const [currentConvId, setCurrentConvId] = useState<string | null>(null)

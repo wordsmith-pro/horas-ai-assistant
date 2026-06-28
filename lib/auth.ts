@@ -18,12 +18,18 @@ const baseURL =
   runtimeUrl ??
   "http://localhost:3000"
 
+// Collect all known origins — including the v0 preview, Vercel preview,
+// production, and localhost. Wildcards are not supported by Better Auth so
+// we enumerate every env-derived URL we can find.
 const trustedOrigins = [
   baseURL,
   productionUrl,
   deploymentUrl,
   runtimeUrl,
   "http://localhost:3000",
+  "https://localhost:3000",
+  // v0.app preview iframes send requests from these origins
+  process.env.NEXT_PUBLIC_APP_URL,
 ].filter(Boolean) as string[]
 
 export const auth = betterAuth({
@@ -31,9 +37,17 @@ export const auth = betterAuth({
   baseURL,
   trustedOrigins,
   emailAndPassword: { enabled: true },
-  ...(process.env.NODE_ENV === "development" && {
-    advanced: {
-      defaultCookieAttributes: { sameSite: "none", secure: true },
+  advanced: {
+    // Required in ALL environments when running inside v0 / Vercel preview
+    // iframes — without sameSite:none the browser silently drops the cookie.
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
     },
-  }),
+    crossSubDomainCookies: {
+      enabled: true,
+    },
+    // Disable CSRF check so that cross-origin requests from the iframe work.
+    disableCSRFCheck: true,
+  },
 })
