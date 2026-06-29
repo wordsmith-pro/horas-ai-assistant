@@ -6,8 +6,9 @@ import MessageBubble from "./MessageBubble"
 import InputBar from "./InputBar"
 import HorasLoader from "./HorasLoader"
 import WelcomeScreen from "./WelcomeScreen"
-import ThemeToggle from "./ThemeToggle"
+import LanguageToggle from "./LanguageToggle"
 import HorasLogo from "./HorasLogo"
+import { useLanguage } from "@/lib/language-context"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { Conversation, Message } from "@/lib/db/schema"
 import type { MediaIntent } from "@/lib/prompt-engineer"
@@ -341,7 +342,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
           </div>
 
           <div className="flex items-center gap-1">
-            <ThemeToggle theme={theme} onToggle={() => setTheme((t) => t === "dark" ? "light" : "dark")} />
+            <LanguageToggle />
           </div>
         </header>
 

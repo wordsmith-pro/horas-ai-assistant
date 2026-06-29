@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Cairo, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { LanguageProvider } from '@/lib/language-context'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -49,9 +50,11 @@ export default function RootLayout({
       className={`${inter.variable} ${cairo.variable} ${geistMono.variable}`}
     >
       <body className="font-sans antialiased">
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
+        <LanguageProvider>
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
+        </LanguageProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import ModeMenu from "./ModeMenu"
+import { useLanguage } from "@/lib/language-context"
 import type { MediaIntent } from "@/lib/prompt-engineer"
 
 interface InputBarProps {
@@ -59,6 +61,7 @@ const MODES: { value: MediaIntent; label: string; labelAr: string; icon: React.R
 ]
 
 export default function InputBar({ onSend, disabled }: InputBarProps) {
+  const { t } = useLanguage()
   const [message, setMessage] = useState("")
   const [mode, setMode] = useState<MediaIntent>("text")
   const [searchWeb, setSearchWeb] = useState(false)
@@ -91,53 +94,12 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
   return (
     <div className="px-4 pb-4 pt-2 bg-background/80 backdrop-blur-sm">
       <form onSubmit={handleSubmit} className="relative max-w-3xl mx-auto">
-        {/* Mode selector strip */}
-        <div className="flex items-center gap-1 mb-2 px-1">
-          {MODES.map((m) => (
-            <button
-              key={m.value}
-              type="button"
-              onClick={() => setMode(m.value)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-medium font-sans transition-all duration-300 border backdrop-blur-md ${
-                mode === m.value
-                  ? `bg-horas-input-active border-horas-gold/50 text-foreground shadow-[0_4px_12px_rgba(212,175,55,0.2)] scale-105`
-                  : "bg-white/5 border-white/10 text-foreground/40 hover:text-foreground/70 hover:border-white/20 hover:bg-white/10"
-              }`}
-            >
-              <span className={mode === m.value ? m.color : ""}>{m.icon}</span>
-              <span>{m.label}</span>
-              <span className="opacity-60">/</span>
-              <span dir="rtl">{m.labelAr}</span>
-            </button>
-          ))}
-
-          <div className="ml-auto flex items-center">
-            <Tooltip>
-              <TooltipTrigger>
-                <button
-                  type="button"
-                  onClick={() => setSearchWeb(!searchWeb)}
-                  disabled={mode !== "text"}
-                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium font-sans transition-all duration-200 border ${
-                    searchWeb && mode === "text"
-                      ? "bg-horas-blue/10 border-horas-blue/40 text-horas-blue"
-                      : "bg-transparent border-transparent text-foreground/30 hover:text-foreground/60 disabled:cursor-not-allowed"
-                  }`}
-                >
-                  <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
-                  </svg>
-                  Web Search
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>Search the web for up-to-date information</TooltipContent>
-            </Tooltip>
-          </div>
-        </div>
 
         {/* Main input container with premium 3D design */}
         <div className="relative flex items-end gap-2 bg-horas-input-bg border border-horas-input-border rounded-3xl px-4 py-3 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] focus-within:border-horas-gold/60 focus-within:shadow-[0_0_0_4px_rgba(212,175,55,0.15),0_8px_32px_rgba(212,175,55,0.1)] transition-all duration-300 group">
+          {/* Mode Menu */}
+          <ModeMenu currentMode={mode} onModeChange={(newMode) => setMode(newMode)} />
+
           {/* Mode indicator dot */}
           <div className={`w-2 h-2 rounded-full flex-shrink-0 mb-1.5 ${activeMode.color.replace("text-", "bg-")}`} />
 
@@ -149,12 +111,12 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
             disabled={disabled}
             placeholder={
               mode === "text"
-                ? "Ask AMUN anything... / اسأل آمون أي شيء..."
+                ? t("input.chat")
                 : mode === "image"
-                ? "Describe the image you want... / صف الصورة التي تريدها..."
+                ? t("input.image")
                 : mode === "video"
-                ? "Describe the video... / صف الفيديو..."
-                : "Describe the music or song... / صف الأغنية أو الموسيقى..."
+                ? t("input.video")
+                : t("input.music")
             }
             rows={1}
             className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-foreground/30 font-sans leading-relaxed max-h-48 overflow-y-auto disabled:opacity-50"
@@ -178,7 +140,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
         </div>
 
         <p className="text-center text-[10px] text-foreground/20 mt-2 font-sans">
-          AMUN AI can make mistakes. Always verify important information.
+          {t("message.disclaimer")}
         </p>
       </form>
     </div>
