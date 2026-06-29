@@ -80,6 +80,7 @@ export default function InputBar({ onSend, disabled }: InputBarProps) {
     if (!message.trim() || disabled) return
     onSend(message.trim(), mode, searchWeb)
     setMessage("")
+    setSearchWeb(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

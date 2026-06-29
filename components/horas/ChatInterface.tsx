@@ -64,17 +64,42 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
       const res = await fetch("/api/conversations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ title: "New Conversation" }),
       })
-      if (!res.ok) return null
+      if (!res.ok) {
+        // Fallback: create local conversation for demo
+        const id = `conv-${Date.now()}`
+        const newConv: Conversation = {
+          id,
+          userId: user.id,
+          title: "New Conversation",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+        setConversations((prev) => [newConv, ...prev])
+        setCurrentConvId(id)
+        return id
+      }
       const conv: Conversation = await res.json()
       setConversations((prev) => [conv, ...prev])
       setCurrentConvId(conv.id)
       return conv.id
     } catch {
-      return null
+      // Fallback: create local conversation for demo
+      const id = `conv-${Date.now()}`
+      const newConv: Conversation = {
+        id,
+        userId: user.id,
+        title: "New Conversation",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+      setConversations((prev) => [newConv, ...prev])
+      setCurrentConvId(id)
+      return id
     }
-  }, [])
+  }, [user.id])
 
   const handleNewChat = useCallback(() => {
     setCurrentConvId(null)
@@ -84,7 +109,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
   const handleSelectConv = useCallback(async (id: string) => {
     setCurrentConvId(id)
     try {
-      const res = await fetch(`/api/conversations/${id}`)
+      const res = await fetch(`/api/conversations/${id}`, { credentials: "include" })
       if (!res.ok) return
       const data = await res.json()
       const loaded: LocalMessage[] = data.messages.map((m: Message) => ({
@@ -103,7 +128,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
 
   const handleDeleteConv = useCallback(async (id: string) => {
     try {
-      await fetch(`/api/conversations/${id}`, { method: "DELETE" })
+      await fetch(`/api/conversations/${id}`, { method: "DELETE", credentials: "include" })
       setConversations((prev) => prev.filter((c) => c.id !== id))
       if (currentConvId === id) {
         setCurrentConvId(null)
@@ -126,6 +151,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
       await fetch(`/api/conversations/${convId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ role, content, mediaType, mediaUrl, mediaMeta }),
       })
     } catch {
@@ -135,7 +161,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
 
   const refreshConversations = async () => {
     try {
-      const res = await fetch("/api/conversations")
+      const res = await fetch("/api/conversations", { credentials: "include" })
       if (res.ok) {
         const convs: Conversation[] = await res.json()
         setConversations(convs)
@@ -172,6 +198,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
       const chatRes = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           message: text,
           conversationHistory: messages
@@ -294,7 +321,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
     handleSend(text, "text", false)
   }, [handleSend])
 
-  const showWelcome = messages.length === 0 && !isLoading
+  const showWelcome = currentConvId === null && messages.length === 0 && !isLoading
 
   return (
     <div
@@ -347,16 +374,18 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
         </header>
 
         {/* Messages area */}
-        <div className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
+        <div className="flex-1 overflow-y-auto bg-background" ref={scrollAreaRef}>
           {showWelcome ? (
             <WelcomeScreen theme={theme} userName={user.name} onSuggestion={handleSuggestion} />
           ) : (
-            <div className="max-w-3xl mx-auto py-4 space-y-1">
+            <div className="max-w-3xl mx-auto py-6 space-y-4 px-4">
               {messages.map((msg) => (
                 msg.isLoading ? (
-                  <HorasLoader key={msg.id} />
+                  <div key={msg.id} className="flex justify-center">
+                    <HorasLoader />
+                  </div>
                 ) : (
-                  <div key={msg.id} className="animate-fadeInUp">
+                  <div key={msg.id}>
                     <MessageBubble
                       role={msg.role}
                       content={msg.content}

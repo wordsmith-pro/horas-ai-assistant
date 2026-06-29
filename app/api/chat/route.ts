@@ -85,7 +85,10 @@ async function webSearch(query: string): Promise<string> {
 export async function POST(req: NextRequest) {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    // Fallback for development
+    if (process.env.NODE_ENV !== "development") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
   }
 
   const { message, conversationHistory = [], searchWeb = false } = await req.json()

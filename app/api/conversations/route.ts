@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     const id = randomUUID()
     const [conv] = await db
       .insert(conversations)
-      .values({ id, userId, title })
+      .values({ id, userId, title, createdAt: new Date(), updatedAt: new Date() })
       .returning()
     return NextResponse.json(conv, { status: 201 })
   } catch (error) {
