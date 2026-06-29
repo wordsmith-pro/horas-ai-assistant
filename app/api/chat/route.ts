@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getSystemPromptForIntent, detectIntent, needsLyricsPipeline, LYRICS_SYSTEM_PROMPT } from "@/lib/prompt-engineer"
 
 const OPENROUTER_BASE = "https://openrouter.ai/api/v1"
-const TEXT_MODEL = "nvidia/nemotron-3.5-content-safety:free"
+const TEXT_MODEL = "mistralai/mistral-7b-instruct:free"
 
 async function callOpenRouter(
   model: string,
@@ -13,7 +13,14 @@ async function callOpenRouter(
   conversationHistory: Array<{ role: string; content: string }> = []
 ) {
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) throw new Error("OPENROUTER_API_KEY is not configured")
+  if (!apiKey) {
+    // Fallback for development - simple response
+    if (process.env.NODE_ENV === "development") {
+      console.log("[AMUN] No API key, using development fallback")
+      return `I received your message: "${userMessage}". I'm AMUN, your Egyptian AI assistant. I can help with text, images, videos, and music generation. Please configure OPENROUTER_API_KEY for full functionality.`
+    }
+    throw new Error("OPENROUTER_API_KEY is not configured")
+  }
 
   const messages = [
     { role: "system", content: systemPrompt },
@@ -26,8 +33,8 @@ async function callOpenRouter(
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "https://horas.ai",
-      "X-Title": "HORAS AI Assistant",
+      "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "https://amun.ai",
+      "X-Title": "AMUN Egyptian AI Assistant",
     },
     body: JSON.stringify({
       model,
@@ -53,7 +60,7 @@ async function webSearch(query: string): Promise<string> {
     const encoded = encodeURIComponent(query)
     const response = await fetch(
       `https://api.duckduckgo.com/?q=${encoded}&format=json&no_html=1&skip_disambig=1`,
-      { headers: { "User-Agent": "HORAS-AI/1.0" } }
+      { headers: { "User-Agent": "AMUN-AI/1.0" } }
     )
     if (!response.ok) return ""
     const data = await response.json()
@@ -113,7 +120,17 @@ export async function POST(req: NextRequest) {
       }
 
       const systemPrompt = getSystemPromptForIntent("text")
-      const reply = await callOpenRouter(TEXT_MODEL, systemPrompt, contextualMessage, conversationHistory)
+      let reply: string
+      try {
+        reply = await callOpenRouter(TEXT_MODEL, systemPrompt, contextualMessage, conversationHistory)
+      } catch (err) {
+        // Fallback for development or API issues
+        if (process.env.NODE_ENV === "development") {
+          reply = `I received your message: "${message}". I'm AMUN, your Egyptian AI assistant. I can help with conversations, image, video, and music generation. To get full AI responses, please configure OPENROUTER_API_KEY with a valid API account.`
+        } else {
+          throw err
+        }
+      }
 
       return NextResponse.json({
         reply,
@@ -150,7 +167,7 @@ export async function POST(req: NextRequest) {
       originalMessage: message,
     })
   } catch (error) {
-    console.error("[HORAS chat]", error)
+    console.error("[AMUN chat]", error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Generation failed" },
       { status: 500 }

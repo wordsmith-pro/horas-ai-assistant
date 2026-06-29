@@ -1,6 +1,6 @@
 "use client"
 
-export default function HorasLoader({ text = "HORAS is thinking..." }: { text?: string }) {
+export default function HorasLoader({ text = "AMUN is thinking..." }: { text?: string }) {
   return (
     <div className="flex items-center gap-3 px-4 py-3">
       {/* Animated Eye of Horus rings */}

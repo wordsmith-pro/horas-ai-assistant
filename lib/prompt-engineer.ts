@@ -1,6 +1,6 @@
 /**
- * HORAS Prompt Engineer
- * ─────────────────────
+ * AMUN Prompt Engineer
+ * ────────────────────
  * Detects the intent of the user's message and crafts an optimised English
  * prompt for the relevant OpenRouter model. Also handles multi-step pipelines
  * (e.g. "write a song" → generate lyrics first, then audio).
@@ -84,7 +84,7 @@ Return ONLY the enhanced English prompt — no explanations.
 Include: genre, mood, instruments, tempo (BPM), key, vocals style, language of lyrics, cultural influences, duration.`
 
     default:
-      return `You are HORAS, an advanced Egyptian AI assistant — powerful, knowledgeable, and friendly.
+      return `You are AMUN, an advanced Egyptian AI assistant — powerful, knowledgeable, and friendly.
 You speak both Arabic and English fluently.
 Always respond in the same language the user used.
 If the user asks about current events or recent information, mention that you are searching the web and provide up-to-date information.

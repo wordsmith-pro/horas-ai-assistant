@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "https://horas.ai",
-        "X-Title": "HORAS AI Assistant",
+        "X-Title": "AMUN Egyptian AI Assistant",
       },
       body: JSON.stringify({
         model: VIDEO_MODEL,
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: videoUrl, model: VIDEO_MODEL })
   } catch (error) {
-    console.error("[HORAS video]", error)
+    console.error("[AMUN video]", error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Video generation failed" },
       { status: 500 }

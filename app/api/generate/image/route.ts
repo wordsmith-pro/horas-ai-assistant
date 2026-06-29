@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "https://horas.ai",
-        "X-Title": "HORAS AI Assistant",
+        "X-Title": "AMUN Egyptian AI Assistant",
       },
       body: JSON.stringify({
         model: IMAGE_MODEL,
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: imageUrl, model: IMAGE_MODEL })
   } catch (error) {
-    console.error("[HORAS image]", error)
+    console.error("[AMUN image]", error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Image generation failed" },
       { status: 500 }
