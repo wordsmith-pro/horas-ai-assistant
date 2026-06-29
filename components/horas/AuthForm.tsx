@@ -37,14 +37,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setLoading(true)
 
     const onSuccess = async () => {
-      // Cache the basic user info to bypass iframe cookie issue
-      localStorage.setItem("amun-user-session", JSON.stringify({
-        user: {
-          id: "temp-" + Date.now(),
-          name: name || email.split("@")[0],
-          email: email,
+      // Get the real session from server
+      try {
+        const res = await fetch("/api/auth/session", { credentials: "include" })
+        if (res.ok) {
+          const session = await res.json()
+          if (session?.user) {
+            // Cache the real user session from server
+            localStorage.setItem("amun-user-session", JSON.stringify(session))
+          }
         }
-      }))
+      } catch (err) {
+        console.log("[v0] Failed to fetch session:", err)
+      }
       window.location.href = "/"
     }
 

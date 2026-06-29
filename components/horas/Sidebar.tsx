@@ -62,6 +62,10 @@ export default function Sidebar({
   }
 
   const handleSignOut = async () => {
+    // Clear cached session from localStorage
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("amun-user-session")
+    }
     await signOut()
     router.push("/sign-in")
     router.refresh()

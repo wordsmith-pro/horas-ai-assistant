@@ -8,8 +8,15 @@ import { randomUUID } from "crypto"
 
 async function getUserId() {
   const session = await auth.api.getSession({ headers: await headers() })
-  if (!session?.user) throw new Error("Unauthorized")
-  return session.user.id
+  if (session?.user?.id) {
+    return session.user.id
+  }
+  
+  // In development, still require proper auth
+  if (process.env.NODE_ENV === "development") {
+    console.log("[v0] No session for message save")
+  }
+  throw new Error("Unauthorized")
 }
 
 // GET /api/conversations/[id] — get messages for a conversation

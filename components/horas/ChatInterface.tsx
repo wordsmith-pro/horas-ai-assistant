@@ -54,6 +54,22 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
     }
   }, [theme])
 
+  // Load conversations from server on mount
+  useEffect(() => {
+    const loadConversations = async () => {
+      try {
+        const res = await fetch("/api/conversations", { credentials: "include" })
+        if (res.ok) {
+          const convs: Conversation[] = await res.json()
+          setConversations(convs)
+        }
+      } catch (err) {
+        console.log("[v0] Failed to load conversations:", err)
+      }
+    }
+    loadConversations()
+  }, [user.id])
+
   // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -67,37 +83,17 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
         credentials: "include",
         body: JSON.stringify({ title: "New Conversation" }),
       })
-      if (!res.ok) {
-        // Fallback: create local conversation for demo
-        const id = `conv-${Date.now()}`
-        const newConv: Conversation = {
-          id,
-          userId: user.id,
-          title: "New Conversation",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }
-        setConversations((prev) => [newConv, ...prev])
-        setCurrentConvId(id)
-        return id
+      if (res.ok) {
+        const conv: Conversation = await res.json()
+        setConversations((prev) => [conv, ...prev])
+        setCurrentConvId(conv.id)
+        return conv.id
       }
-      const conv: Conversation = await res.json()
-      setConversations((prev) => [conv, ...prev])
-      setCurrentConvId(conv.id)
-      return conv.id
-    } catch {
-      // Fallback: create local conversation for demo
-      const id = `conv-${Date.now()}`
-      const newConv: Conversation = {
-        id,
-        userId: user.id,
-        title: "New Conversation",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
-      setConversations((prev) => [newConv, ...prev])
-      setCurrentConvId(id)
-      return id
+      console.log("[v0] API error creating conversation:", res.status)
+      return null
+    } catch (err) {
+      console.log("[v0] Error creating conversation:", err)
+      return null
     }
   }, [user.id])
 
@@ -229,7 +225,7 @@ export default function ChatInterface({ user, initialConversations }: ChatInterf
         return
       }
 
-      // ── Media generation needed ────────────────────────────────────────────
+      // ── Media generation needed ──────────���─────────────────────────────────
       const mediaIntent: MediaIntent = chatData.mediaIntent
 
       // Show intermediate text (e.g. lyrics)
