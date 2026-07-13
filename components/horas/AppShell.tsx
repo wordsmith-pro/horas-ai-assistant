@@ -22,6 +22,9 @@ export default function AppShell() {
     const loadSession = async () => {
       setLoading(true)
 
+      const isLocalhost = typeof window !== "undefined" && 
+        (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+
       // First, try to read from localStorage (set after successful sign-in)
       let session: CachedSession | null = null
       if (typeof window !== "undefined") {
@@ -36,7 +39,7 @@ export default function AppShell() {
       }
 
       // If no cached session, try to fetch from API
-      if (!session?.user) {
+      if (!session?.user && !isLocalhost) {
         try {
           const res = await fetch("/api/auth/session", { credentials: "include" })
           if (res.ok) {
@@ -48,7 +51,21 @@ export default function AppShell() {
       }
 
       if (!session?.user) {
-        // No session found - redirect to sign-in
+        if (isLocalhost) {
+          // Localhost - use demo user for testing without auth
+          console.log("[v0] Demo mode: Using test user for message sending")
+          const demoUser = {
+            id: "test-user-" + Date.now(),
+            name: "Test User",
+            email: "test@amun.ai"
+          }
+          setUser(demoUser)
+          setConversations([])
+          setLoading(false)
+          return
+        }
+        
+        // Production or non-local - redirect to sign-in
         window.location.href = "/sign-in"
         return
       }
