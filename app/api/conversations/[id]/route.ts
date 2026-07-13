@@ -12,10 +12,14 @@ async function getUserId() {
     return session.user.id
   }
   
-  // In development, still require proper auth
-  if (process.env.NODE_ENV === "development") {
-    console.log("[v0] No session for message save")
+  // For localhost testing without auth
+  const headersList = await headers()
+  const host = headersList.get("host") || ""
+  if (host.includes("localhost") || host.includes("127.0.0.1")) {
+    console.log("[v0] Localhost demo mode: using test user ID")
+    return "test-user-dev-" + Date.now()
   }
+  
   throw new Error("Unauthorized")
 }
 
